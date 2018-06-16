@@ -1,0 +1,40 @@
+swagger: "2.0"
+info:
+  description: "TelaraDB-Api"
+  version: "0.0.1"
+  title: "Telara DB"
+  termsOfService: "-"
+  contact:
+    email: "developer@tobiaskloss.com"
+  license:
+    name: "License Unknown"
+    url: "https://google.de"
+host: "loudkfrn7d.execute-api.us-east-1.amazonaws.com"
+basePath: "/latest/api/v0"
+schemes:
+- "https"
+paths:
+  /search/categories:
+    get:
+      summary: "Get all categories"
+      description: "Requests all categories"
+      operationId: "findAllCategories"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"
+            $ref: "#/definitions/CategoryList"
+definitions:
+  CategoryList:
+    type: "object"
+    properties:
+      items:
+        type: "array"
+        items:
+          type: "string"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"
