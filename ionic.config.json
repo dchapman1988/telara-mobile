@@ -1,0 +1,8 @@
+{
+  "name": "telara",
+  "app_id": "8f75b207",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}
