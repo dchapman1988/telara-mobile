@@ -18,7 +18,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 
 import { Observable }                                        from 'rxjs/Observable';
 
-import { CategoryList } from '../model/categoryList';
+import { ItemList } from '../model/itemList';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -62,9 +62,9 @@ export class DefaultService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findAllCategories(observe?: 'body', reportProgress?: boolean): Observable<CategoryList>;
-    public findAllCategories(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<CategoryList>>;
-    public findAllCategories(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<CategoryList>>;
+    public findAllCategories(observe?: 'body', reportProgress?: boolean): Observable<ItemList>;
+    public findAllCategories(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ItemList>>;
+    public findAllCategories(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ItemList>>;
     public findAllCategories(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -82,7 +82,43 @@ export class DefaultService {
         let consumes: string[] = [
         ];
 
-        return this.httpClient.get<CategoryList>(`${this.basePath}/search/categories`,
+        return this.httpClient.get<ItemList>(`${this.basePath}/search/categories`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Get all tags
+     * Requests all tags
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public findAllTags(observe?: 'body', reportProgress?: boolean): Observable<ItemList>;
+    public findAllTags(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ItemList>>;
+    public findAllTags(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ItemList>>;
+    public findAllTags(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set("Accept", httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        let consumes: string[] = [
+        ];
+
+        return this.httpClient.get<ItemList>(`${this.basePath}/search/tags`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

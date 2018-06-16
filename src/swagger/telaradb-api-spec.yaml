@@ -26,9 +26,22 @@ paths:
           description: "successful operation"
           schema:
             type: "object"
-            $ref: "#/definitions/CategoryList"
+            $ref: '#/definitions/ItemList'
+  /search/tags:
+    get:
+      summary: "Get all tags"
+      description: "Requests all tags"
+      operationId: "findAllTags"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"
+            $ref: '#/definitions/ItemList'
 definitions:
-  CategoryList:
+  ItemList:
     type: "object"
     properties:
       items:

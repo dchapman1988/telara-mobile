@@ -11,6 +11,6 @@
  */
 
 
-export interface CategoryList {
+export interface ItemList {
     items?: Array<string>;
 }
