@@ -9,12 +9,7 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
-import { Item } from './item';
 
 
-export interface ItemList {
-    items?: Array<Item>;
-    page?: number;
-    pages?: number;
-    total?: number;
+export interface Item {
 }

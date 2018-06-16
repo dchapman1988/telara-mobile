@@ -19,6 +19,7 @@ import { CustomHttpUrlEncodingCodec }                        from '../encoder';
 import { Observable }                                        from 'rxjs/Observable';
 
 import { ItemList } from '../model/itemList';
+import { StringList } from '../model/stringList';
 
 import { BASE_PATH, COLLECTION_FORMATS }                     from '../variables';
 import { Configuration }                                     from '../configuration';
@@ -62,9 +63,9 @@ export class DefaultService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findAllCategories(observe?: 'body', reportProgress?: boolean): Observable<ItemList>;
-    public findAllCategories(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ItemList>>;
-    public findAllCategories(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ItemList>>;
+    public findAllCategories(observe?: 'body', reportProgress?: boolean): Observable<StringList>;
+    public findAllCategories(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<StringList>>;
+    public findAllCategories(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<StringList>>;
     public findAllCategories(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -82,7 +83,7 @@ export class DefaultService {
         let consumes: string[] = [
         ];
 
-        return this.httpClient.get<ItemList>(`${this.basePath}/search/categories`,
+        return this.httpClient.get<StringList>(`${this.basePath}/search/categories`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,
@@ -98,9 +99,9 @@ export class DefaultService {
      * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
      * @param reportProgress flag to report request and response progress.
      */
-    public findAllTags(observe?: 'body', reportProgress?: boolean): Observable<ItemList>;
-    public findAllTags(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ItemList>>;
-    public findAllTags(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ItemList>>;
+    public findAllTags(observe?: 'body', reportProgress?: boolean): Observable<StringList>;
+    public findAllTags(observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<StringList>>;
+    public findAllTags(observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<StringList>>;
     public findAllTags(observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
 
         let headers = this.defaultHeaders;
@@ -118,7 +119,83 @@ export class DefaultService {
         let consumes: string[] = [
         ];
 
-        return this.httpClient.get<ItemList>(`${this.basePath}/search/tags`,
+        return this.httpClient.get<StringList>(`${this.basePath}/search/tags`,
+            {
+                withCredentials: this.configuration.withCredentials,
+                headers: headers,
+                observe: observe,
+                reportProgress: reportProgress
+            }
+        );
+    }
+
+    /**
+     * Find items
+     * Find items based on a lot of criteria
+     * @param name Name of the item
+     * @param tags Tags of the item
+     * @param categories Name of the item
+     * @param skip Number of results to skip for pagination
+     * @param limit Max Items to fetch per query
+     * @param _export Export
+     * @param minLevel Minimum Character Level
+     * @param maxLevel Maximum Character Level
+     * @param minILevel Minimum Item Level
+     * @param maxILevel Maximum Item Level
+     * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
+     * @param reportProgress flag to report request and response progress.
+     */
+    public findItems(name: string, tags: string, categories: string, skip: number, limit: number, _export: boolean, minLevel: number, maxLevel: number, minILevel: number, maxILevel: number, observe?: 'body', reportProgress?: boolean): Observable<ItemList>;
+    public findItems(name: string, tags: string, categories: string, skip: number, limit: number, _export: boolean, minLevel: number, maxLevel: number, minILevel: number, maxILevel: number, observe?: 'response', reportProgress?: boolean): Observable<HttpResponse<ItemList>>;
+    public findItems(name: string, tags: string, categories: string, skip: number, limit: number, _export: boolean, minLevel: number, maxLevel: number, minILevel: number, maxILevel: number, observe?: 'events', reportProgress?: boolean): Observable<HttpEvent<ItemList>>;
+    public findItems(name: string, tags: string, categories: string, skip: number, limit: number, _export: boolean, minLevel: number, maxLevel: number, minILevel: number, maxILevel: number, observe: any = 'body', reportProgress: boolean = false ): Observable<any> {
+        if (name === null || name === undefined) {
+            throw new Error('Required parameter name was null or undefined when calling findItems.');
+        }
+        if (tags === null || tags === undefined) {
+            throw new Error('Required parameter tags was null or undefined when calling findItems.');
+        }
+        if (categories === null || categories === undefined) {
+            throw new Error('Required parameter categories was null or undefined when calling findItems.');
+        }
+        if (skip === null || skip === undefined) {
+            throw new Error('Required parameter skip was null or undefined when calling findItems.');
+        }
+        if (limit === null || limit === undefined) {
+            throw new Error('Required parameter limit was null or undefined when calling findItems.');
+        }
+        if (_export === null || _export === undefined) {
+            throw new Error('Required parameter _export was null or undefined when calling findItems.');
+        }
+        if (minLevel === null || minLevel === undefined) {
+            throw new Error('Required parameter minLevel was null or undefined when calling findItems.');
+        }
+        if (maxLevel === null || maxLevel === undefined) {
+            throw new Error('Required parameter maxLevel was null or undefined when calling findItems.');
+        }
+        if (minILevel === null || minILevel === undefined) {
+            throw new Error('Required parameter minILevel was null or undefined when calling findItems.');
+        }
+        if (maxILevel === null || maxILevel === undefined) {
+            throw new Error('Required parameter maxILevel was null or undefined when calling findItems.');
+        }
+
+        let headers = this.defaultHeaders;
+
+        // to determine the Accept header
+        let httpHeaderAccepts: string[] = [
+            'application/json'
+        ];
+        let httpHeaderAcceptSelected: string | undefined = this.configuration.selectHeaderAccept(httpHeaderAccepts);
+        if (httpHeaderAcceptSelected != undefined) {
+            headers = headers.set("Accept", httpHeaderAcceptSelected);
+        }
+
+        // to determine the Content-Type header
+        let consumes: string[] = [
+        ];
+
+        return this.httpClient.get<ItemList>(`${this.basePath}/items`,
             {
                 withCredentials: this.configuration.withCredentials,
                 headers: headers,

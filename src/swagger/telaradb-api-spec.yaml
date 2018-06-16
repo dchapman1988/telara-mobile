@@ -26,7 +26,7 @@ paths:
           description: "successful operation"
           schema:
             type: "object"
-            $ref: '#/definitions/ItemList'
+            $ref: '#/definitions/StringList'
   /search/tags:
     get:
       summary: "Get all tags"
@@ -39,15 +39,104 @@ paths:
           description: "successful operation"
           schema:
             type: "object"
+            $ref: '#/definitions/StringList'
+  /items:
+    get:
+      summary: "Find items"
+      description: "Find items based on a lot of criteria"
+      operationId: "findItems"
+      produces:
+      - "application/json"
+      parameters:
+        - name: "name"
+          required: true
+          in: "path"
+          description: "Name of the item"
+          type: "string"
+
+        - name: "tags"
+          required: true
+          in: "path"
+          description: "Tags of the item"
+          type: "string"
+
+        - name: "categories"
+          required: true
+          in: "path"
+          description: "Name of the item"
+          type: "string"
+
+        - name: "skip"
+          required: true
+          in: "path"
+          description: "Number of results to skip for pagination"
+          type: "integer"
+
+        - name: "limit"
+          required: true
+          in: "path"
+          description: "Max Items to fetch per query"
+          type: "integer"
+
+        - name: "export"
+          required: true
+          in: "path"
+          description: "Export"
+          type: "boolean"
+
+        - name: "min_level"
+          required: true
+          in: "path"
+          description: "Minimum Character Level"
+          type: "integer"
+
+        - name: "max_level"
+          required: true
+          in: "path"
+          description: "Maximum Character Level"
+          type: "integer"
+
+        - name: "min_iLevel"
+          required: true
+          in: "path"
+          description: "Minimum Item Level"
+          type: "integer"
+
+        - name: "max_iLevel"
+          required: true
+          in: "path"
+          description: "Maximum Item Level"
+          type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"
             $ref: '#/definitions/ItemList'
 definitions:
-  ItemList:
+  StringList:
     type: "object"
     properties:
       items:
         type: "array"
         items:
           type: "string"
+  ItemList:
+    type: "object"
+    properties:
+      items:
+        type: "array"
+        items:
+          type: "object"
+          $ref: '#/definitions/Item'
+      page:
+        type: "integer"
+      pages:
+        type: "integer"
+      total:
+        type: "integer"
+  Item:
+    type: "object"
 externalDocs:
   description: "Find out more about Swagger"
   url: "http://swagger.io"

@@ -8,7 +8,7 @@
 </ion-header>
 
 <ion-content>
-  <ion-card>
+  <!--<ion-card>
     <ion-card-header>
       <ion-card-title>Categories</ion-card-title>
     </ion-card-header>
@@ -23,15 +23,24 @@
 
 
   <ion-card>
+  <ion-card-header>
+    <ion-card-title>Tags</ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <ion-list>
+      <button ion-item *ngFor="let item of tags">
+        {{item}}
+      </button>
+    </ion-list>
+  </ion-card-content>
+</ion-card>-->
+
+  <ion-card>
     <ion-card-header>
       <ion-card-title>Tags</ion-card-title>
     </ion-card-header>
     <ion-card-content>
-      <ion-list>
-        <button ion-item *ngFor="let item of tags">
-          {{item}}
-        </button>
-      </ion-list>
+      <img *ngFor="let item of items.items" src="https://telaradb.com/images/{{item.Icon}}.png" style="float: left; width: 75px; height: 75px;" />
     </ion-card-content>
   </ion-card>
 </ion-content>
