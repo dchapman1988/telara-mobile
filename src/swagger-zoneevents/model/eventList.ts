@@ -1,6 +1,6 @@
 /**
- * Telara DB
- * TelaraDB-Api
+ * Rift ZoneEvents
+ * Roft-ZoneEvents-Api
  *
  * OpenAPI spec version: 0.0.1
  * Contact: developer@tobiaskloss.com
@@ -9,7 +9,10 @@
  * https://github.com/swagger-api/swagger-codegen.git
  * Do not edit the class manually.
  */
+import { ZoneEvent } from './zoneEvent';
 
 
-export interface Item {
+export interface EventList {
+    status?: string;
+    data?: Array<ZoneEvent>;
 }

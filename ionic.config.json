@@ -4,5 +4,11 @@
   "type": "ionic-angular",
   "integrations": {
     "cordova": {}
-  }
+  },
+  "proxies": [
+    {
+      "path": "/chatservice/zoneevent",
+      "proxyUrl": "https://web-api-eu.riftgame.com/chatservice/zoneevent"
+    }
+  ]
 }

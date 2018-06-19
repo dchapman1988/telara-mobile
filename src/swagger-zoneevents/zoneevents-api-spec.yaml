@@ -1,0 +1,63 @@
+swagger: "2.0"
+info:
+  description: "Roft-ZoneEvents-Api"
+  version: "0.0.1"
+  title: "Rift ZoneEvents"
+  termsOfService: "-"
+  contact:
+    email: "developer@tobiaskloss.com"
+  license:
+    name: "License Unknown"
+    url: "https://google.de"
+host: "web-api-eu.riftgame.com"
+basePath: "/chatservice/zoneevent"
+schemes:
+- "https"
+tags:
+  - name: zoneevent-service
+    description: Zoneevent Service
+paths:
+  /list:
+    get:
+      tags:
+        - zoneevent-service
+      summary: "Get all events for a shard"
+      description: "Requests all events for a shard"
+      operationId: "findAllEventsForShard"
+      produces:
+      - "application/json"
+      parameters:
+        - name: "shardId"
+          in: "query"
+          description: "The id of the shard"
+          type: "integer"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            type: "object"
+            $ref: '#/definitions/EventList'
+definitions:
+  EventList:
+    type: "object"
+    properties:
+      status:
+        type: "string"
+      data:
+        type: "array"
+        items:
+          $ref: '#/definitions/ZoneEvent'
+  ZoneEvent:
+    type: "object"
+    properties:
+      zone:
+        type: "string"
+      zoneId:
+        type: "integer"
+      name:
+        type: "string"
+      started:
+        type: "integer"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger-telaradb.io"

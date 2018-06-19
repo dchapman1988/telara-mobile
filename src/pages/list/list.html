@@ -3,7 +3,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Categories & Tags</ion-title>
+    <ion-title>Events</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -33,7 +33,7 @@
       </button>
     </ion-list>
   </ion-card-content>
-</ion-card>-->
+</ion-card>
 
   <ion-card>
     <ion-card-header>
@@ -42,5 +42,25 @@
     <ion-card-content>
       <img *ngFor="let item of items.items" src="https://telaradb.com/images/{{item.Icon}}.png" style="float: left; width: 75px; height: 75px;" />
     </ion-card-content>
+  </ion-card>-->
+  <ion-buttons>
+    <button ion-button round (click)="getEventsForShard(2721, 'Gelidra')">Gelidra</button>
+    <button ion-button round (click)="getEventsForShard(2711, 'Brutwacht')">Brutwacht</button>
+    <button ion-button round (click)="getEventsForShard(2722, 'Zaviel')">Zaviel</button>
+  </ion-buttons>
+  <ion-title>{{title}}</ion-title>
+  <span *ngFor="let event of events">
+  <ion-card *ngIf="event.hasOwnProperty('name')">
+    <ion-card-header>
+      <ion-card-title>{{event.zone}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <p>{{event.name}} - {{event.started}}</p>
+      <ion-chip>
+        <ion-icon name="pin"></ion-icon>
+        <ion-label >Da ist 1 Event am start!</ion-label>
+      </ion-chip>
+    </ion-card-content>
   </ion-card>
+   </span>
 </ion-content>

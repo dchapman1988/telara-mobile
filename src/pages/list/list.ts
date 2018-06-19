@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import {DefaultService, ItemList} from "../../swagger";
+import {DefaultService, ItemList} from "../../swagger-telaradb";
+import {ZoneEvent, ZoneeventServiceService} from "../../swagger-zoneevents";
 
 @Component({
   selector: 'page-list',
@@ -11,8 +12,10 @@ export class ListPage implements OnInit{
   categories: string[] = [];
   tags: string[] = [];
   items: ItemList = {items: [], page: 0, pages: 0, total: 0};
+  events: ZoneEvent[] = [];
+  title: string = "No Shard selected yet.";
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private service: DefaultService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private service: DefaultService, private zoneeventServiceService: ZoneeventServiceService) {
   }
 
   ngOnInit(): void {
@@ -34,5 +37,12 @@ export class ListPage implements OnInit{
       }
     });
 
+  }
+
+  getEventsForShard(shardId: number, title: string) {
+    this.zoneeventServiceService.findAllEventsForShard(shardId).subscribe(eventList => {
+      this.events = eventList.data;
+      this.title = title;
+    });
   }
 }

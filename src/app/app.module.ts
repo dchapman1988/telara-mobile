@@ -8,8 +8,9 @@ import { ListPage } from '../pages/list/list';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
-import {DefaultService} from "../swagger";
-import {HttpClient, HttpClientModule} from "@angular/common/http";
+import { DefaultService} from "../swagger-telaradb";
+import { HttpClient, HttpClientModule} from "@angular/common/http";
+import {BASE_PATH, ZoneeventServiceService} from "../swagger-zoneevents";
 
 @NgModule({
   declarations: [
@@ -33,7 +34,9 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
     SplashScreen,
     HttpClient,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    DefaultService
+    DefaultService,
+    ZoneeventServiceService,
+    { provide: BASE_PATH, useValue: 'http://localhost:8100/chatservice/zoneevent' }
   ]
 })
 export class AppModule {}
