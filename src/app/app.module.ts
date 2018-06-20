@@ -13,6 +13,8 @@ import {HttpBackend, HttpClient, HttpClientModule, HttpXhrBackend} from "@angula
 import {ZoneEventService} from "../zoneevents/zone-event.service";
 import {HTTP} from "@ionic-native/http";
 import {NativeHttpBackend, NativeHttpFallback, NativeHttpModule} from "ionic-native-http-connection-backend";
+import {Pipes} from "@angular/compiler-cli";
+import {PipesModule} from "../pipes/pipes.module";
 
 @NgModule({
   declarations: [
@@ -24,6 +26,7 @@ import {NativeHttpBackend, NativeHttpFallback, NativeHttpModule} from "ionic-nat
     BrowserModule,
     HttpClientModule,
     NativeHttpModule,
+    PipesModule,
     IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],

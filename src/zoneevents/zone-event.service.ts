@@ -19,13 +19,13 @@ export class ZoneEventService {
   protected basePathUS = 'https://web-api-us.riftgame.com/chatservice/zoneevent';
 
   private usShardMap = {
-    "Deepwood": 1704,
-    "Faeblight": 1707,
-    "Graybriar": 1702,
-    "Hailol": 1721,
-    "Laethys": 1708,
-    "Seastone": 1701,
-    "Wolfsbane": 1706
+    1704: "Deepwood",
+    1707: "Faeblight",
+    1702: "Greybriar",
+    1721: "Hailol",
+    1708: "Laethys",
+    1701: "Seastone",
+    1706: "Wolfsbane"
   };
 
   private euShardMap = {
@@ -45,20 +45,22 @@ export class ZoneEventService {
 
   }
 
-  public findAllEventsForEU(): Observable<ZoneEventList[]> {
+  public findAllEventsForDC(dataCenter: string): Observable<ZoneEventList[]> {
     return new Observable<ZoneEventList[]>(subscriber => {
-      let observables: Observable<ZoneEventList>[] = [];
 
-      for (let shardIdStr in this.euShardMap) {
-        let shardId = parseInt(shardIdStr);
-        let zoneEventListObservable = this.findAllEventsForShard(shardId, 'EU');
-        observables.push(zoneEventListObservable);
+      let observableList: Observable<ZoneEventList>[];
+      if(dataCenter === 'EU') {
+        observableList = this.getObservableListForEU();
+      } else if (dataCenter === 'US') {
+        observableList = this.getObservableListForUS();
+      } else {
+        observableList = this.getObservableListForPrime();
       }
 
-      let zippedObservable = zip.apply(null, observables);
+      let zippedObservable = zip.apply(null, observableList);
 
-      zippedObservable.subscribe(euZoneEvents => {
-        subscriber.next(euZoneEvents);
+      zippedObservable.subscribe(zoneEvents => {
+        subscriber.next(zoneEvents);
       }, error => {
         subscriber.error(error);
       }, () => {
@@ -67,13 +69,45 @@ export class ZoneEventService {
     });
   }
 
+  private getObservableListForEU(): Observable<ZoneEventList>[]{
+    let observables: Observable<ZoneEventList>[] = [];
+    for (let shardIdStr in this.euShardMap){
+      let shardId = parseInt(shardIdStr);
+      let zoneEventListObservable = this.findAllEventsForShard(shardId, 'EU', this.euShardMap[shardIdStr]);
+      observables.push(zoneEventListObservable);
+    }
+    return observables;
+  }
+
+  private getObservableListForUS(): Observable<ZoneEventList>[]{
+    let observables: Observable<ZoneEventList>[] = [];
+    for (let shardIdStr in this.usShardMap){
+      let shardId = parseInt(shardIdStr);
+      let zoneEventListObservable = this.findAllEventsForShard(shardId, 'US', this.usShardMap[shardIdStr]);
+      observables.push(zoneEventListObservable);
+    }
+    return observables;
+  }
+
+  private getObservableListForPrime(): Observable<ZoneEventList>[]{
+    let observables: Observable<ZoneEventList>[] = [];
+    for (let shardIdStr in this.primeShardMap){
+      let shardId = parseInt(shardIdStr);
+      let zoneEventListObservable = this.findAllEventsForShard(shardId, 'Prime', this.primeShardMap[shardIdStr]);
+      observables.push(zoneEventListObservable);
+    }
+    return observables;
+  }
+
+
+
   /**
    * Get all events for a shard
    * Requests all events for a shard
    * @param shardId The id of the shard
    * @param dataCenter The datacenter to request info from
    */
-  public findAllEventsForShard(shardId: number, dataCenter: string): Observable<ZoneEventList> {
+  public findAllEventsForShard(shardId: number, dataCenter: string, shardName: string): Observable<ZoneEventList> {
     let basepath = "";
     if(dataCenter === 'EU') {
       basepath = this.basePathEU;
@@ -89,15 +123,24 @@ export class ZoneEventService {
     let headers = this.defaultHeaders;
     headers = headers.set("Accept", 'application/json');
 
-    return this.httpClient.get<ZoneEventList>(`${basepath}/list`,
-      {
-        params: queryParameters,
-        withCredentials: false,
-        headers: headers,
-        observe: 'body',
-        reportProgress: false
-      }
-    );
+    return new Observable(subscriber => {
+      let zoneEventListObservable = this.httpClient.get<ZoneEventList>(`${basepath}/list`,
+        {
+          params: queryParameters,
+          withCredentials: false,
+          headers: headers,
+          observe: 'body',
+          reportProgress: false
+        });
+      zoneEventListObservable.subscribe(zoneEventList => {
+        zoneEventList.shard = shardName;
+        subscriber.next(zoneEventList);
+        subscriber.complete();
+      }, error => {
+        subscriber.error(error);
+      })
+    });
+
   }
 
 }

@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {DefaultService} from "../../swagger-telaradb";
 import {ZoneEventService} from "../../zoneevents/zone-event.service";
 import {ZoneEvent} from "../../zoneevents/zoneEvent";
+import {ZoneEventList} from "../../zoneevents/zoneEventList";
 
 @Component({
   selector: 'page-zoneevents',
@@ -9,7 +10,7 @@ import {ZoneEvent} from "../../zoneevents/zoneEvent";
 })
 export class ZoneEventPage implements OnInit {
 
-  events: ZoneEvent[] = [];
+  events: ZoneEventList[] = [];
   title: string = "No Shard selected yet.";
 
   constructor(private service: DefaultService, private zoneEventService: ZoneEventService) {
@@ -21,21 +22,53 @@ export class ZoneEventPage implements OnInit {
 
   getEventsForEU() {
     this.events = [];
-    let newEvents: ZoneEvent[] = [];
-    this.zoneEventService.findAllEventsForEU().subscribe(zoneEventListArray => {
+    this.title = 'Loading EU...';
+    this.zoneEventService.findAllEventsForDC('EU').subscribe(zoneEventListArray => {
       for (let zoneEventList of zoneEventListArray) {
-        let events = zoneEventList.data;
-        for (let event of events) {
-          if (event.name !== undefined) {
-            newEvents.push(event);
-          }
-        }
+        zoneEventList.data = zoneEventList.data.filter(event => {
+          return event.hasOwnProperty('name');
+        });
       }
-      this.events = newEvents;
+      this.events = zoneEventListArray;
       this.title = 'EU';
     }, error => {
       console.log("Error while fetching Events for EU!");
       console.log(JSON.stringify(error));
     });
   }
+
+  getEventsForUS() {
+    this.events = [];
+    this.title = 'Loading US...';
+    this.zoneEventService.findAllEventsForDC('US').subscribe(zoneEventListArray => {
+      for (let zoneEventList of zoneEventListArray) {
+        zoneEventList.data = zoneEventList.data.filter(event => {
+          return event.hasOwnProperty('name');
+        });
+      }
+      this.events = zoneEventListArray;
+      this.title = 'US';
+    }, error => {
+      console.log("Error while fetching Events for US!");
+      console.log(JSON.stringify(error));
+    });
+  }
+
+  getEventsForPrime() {
+    this.events = [];
+    this.title = 'Loading Prime...';
+    this.zoneEventService.findAllEventsForDC('Prime').subscribe(zoneEventListArray => {
+      for (let zoneEventList of zoneEventListArray) {
+        zoneEventList.data = zoneEventList.data.filter(event => {
+          return event.hasOwnProperty('name');
+        });
+      }
+      this.events = zoneEventListArray;
+      this.title = 'Prime';
+    }, error => {
+      console.log("Error while fetching Events for Prime!");
+      console.log(JSON.stringify(error));
+    });
+  }
+
 }

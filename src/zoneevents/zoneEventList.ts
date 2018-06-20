@@ -11,6 +11,7 @@
  */
 import { ZoneEvent } from './zoneEvent';
 export interface ZoneEventList {
+  shard?: string;
     status?: string;
     data?: Array<ZoneEvent>;
 }
