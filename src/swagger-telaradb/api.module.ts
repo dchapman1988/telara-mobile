@@ -22,7 +22,7 @@ export class ApiModule {
 
     constructor( @Optional() @SkipSelf() parentModule: ApiModule) {
         if (parentModule) {
-            throw new Error('ApiModule is already loaded. Import your base AppModule only.');
+            throw new Error('ZoneEventModule is already loaded. Import your base AppModule only.');
         }
     }
 }

@@ -1,33 +1,36 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { ErrorHandler, NgModule } from '@angular/core';
-import { IonicApp, IonicErrorHandler, IonicModule } from 'ionic-angular';
+import {IonicApp, IonicErrorHandler, IonicModule, Platform} from 'ionic-angular';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
+import { TabsPage } from '../pages/tabs/tabs';
+import { ZoneEventPage } from '../pages/zone-events/zone-events';
 
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { DefaultService} from "../swagger-telaradb";
-import { HttpClient, HttpClientModule} from "@angular/common/http";
-import {BASE_PATH, ZoneeventServiceService} from "../swagger-zoneevents";
+import {HttpBackend, HttpClient, HttpClientModule, HttpXhrBackend} from "@angular/common/http";
+import {ZoneEventService} from "../zoneevents/zone-event.service";
+import {HTTP} from "@ionic-native/http";
+import {NativeHttpBackend, NativeHttpFallback, NativeHttpModule} from "ionic-native-http-connection-backend";
 
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
-    ListPage
+    TabsPage,
+    ZoneEventPage
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
+    NativeHttpModule,
     IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
-    ListPage
+    TabsPage,
+    ZoneEventPage
   ],
   providers: [
     StatusBar,
@@ -35,8 +38,10 @@ import {BASE_PATH, ZoneeventServiceService} from "../swagger-zoneevents";
     HttpClient,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     DefaultService,
-    ZoneeventServiceService,
-    { provide: BASE_PATH, useValue: 'http://localhost:8100/chatservice/zoneevent' }
+    ZoneEventService,
+    HTTP,
+    {provide: HttpBackend, useClass: NativeHttpFallback, deps: [Platform, NativeHttpBackend, HttpXhrBackend]},
+
   ]
 })
 export class AppModule {}

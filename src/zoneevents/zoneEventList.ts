@@ -10,9 +10,7 @@
  * Do not edit the class manually.
  */
 import { ZoneEvent } from './zoneEvent';
-
-
-export interface EventList {
+export interface ZoneEventList {
     status?: string;
     data?: Array<ZoneEvent>;
 }

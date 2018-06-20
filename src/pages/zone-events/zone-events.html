@@ -1,0 +1,43 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>Zone Events</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-fab bottom right>
+    <button ion-fab ><ion-icon name="refresh"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button ion-fab color="primary" (click)="getEventsForEU()">EU</button>
+      <button ion-fab color="primary">US</button>
+      <button ion-fab color="primary">Prime</button>
+    </ion-fab-list>
+  </ion-fab>
+
+
+  <ion-card>
+    <ion-card-header>
+      <ion-title>{{title}}</ion-title>
+    </ion-card-header>
+
+    <ion-list>
+      <ion-item ion-item *ngFor="let event of events">
+        <ion-icon name="pin" item-start></ion-icon>
+        <h3>{{ event.name }}</h3>
+        <p>{{ event.zone }}</p>
+        <ion-badge item-end>{{ event.started }} </ion-badge>
+      </ion-item>
+      <button >
+
+      </button>
+    </ion-list>
+
+
+  </ion-card>
+
+
+
+
+
+
+</ion-content>
