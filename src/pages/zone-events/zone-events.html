@@ -2,43 +2,30 @@
   <ion-navbar>
     <ion-title>Zone Events</ion-title>
   </ion-navbar>
+  <ion-toolbar>
+    <ion-segment>
+      <ion-segment-button (click)="getEventsForEU()" value="EU">EU</ion-segment-button>
+      <ion-segment-button (click)="getEventsForUS()" value="US">US</ion-segment-button>
+      <ion-segment-button (click)="getEventsForPrime()" value="Prime">Prime</ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <ion-fab bottom right>
-    <button ion-fab color="danger">
-      <ion-icon name="refresh"></ion-icon>
-    </button>
-    <ion-fab-list side="top">
-      <button ion-fab color="danger" (click)="getEventsForEU()">EU</button>
-      <button ion-fab color="danger" (click)="getEventsForUS()">US</button>
-      <button ion-fab color="danger" (click)="getEventsForPrime()">Prime</button>
-    </ion-fab-list>
-  </ion-fab>
-
-  <ng-container  *ngFor="let shard of events">
-    <ion-card ion-item *ngIf="shard.data.length > 0">
-      <ion-card-header>
-        <ion-title>{{title}} - {{shard.shard}}</ion-title>
-      </ion-card-header>
 
       <ion-list>
-        <ng-container *ngFor="let event of shard.data">
-          <ion-item ion-item>
-            <ion-icon name="pin" item-start></ion-icon>
-            <h3>{{ event.name }}</h3>
-            <p>{{ event.zone }}</p>
-            <ion-badge item-end>{{ event.started | eventTime }}</ion-badge>
-          </ion-item>
+        <ng-container *ngFor="let shard of events">
+          <ion-item-group *ngIf="shard.data.length > 0">
+            <ion-item-divider>{{ shard.shard }}</ion-item-divider>
+            <ng-container *ngFor="let event of shard.data">
+              <ion-item ion-item>
+                <h3>{{ event.name }}</h3>
+                <p>{{ event.zone }}</p>
+                <ion-badge item-end>{{ event.started | eventTime }}</ion-badge>
+              </ion-item>
+            </ng-container>
+          </ion-item-group>
         </ng-container>
-        <button>
-
-        </button>
       </ion-list>
-
-
-    </ion-card>
-  </ng-container>
-
 
 </ion-content>

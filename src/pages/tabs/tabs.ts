@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import {ZoneEventPage} from "../zone-events/zone-events";
+import {HomePage} from "../home/home";
+import {DatabasePage} from "../database/database";
 
 @Component({
   templateUrl: 'tabs.html'
@@ -7,6 +9,7 @@ import {ZoneEventPage} from "../zone-events/zone-events";
 export class TabsPage {
 
   tab1Root = ZoneEventPage;
-  tab2Root = TabsPage;
+  tab2Root = HomePage;
+  tab3Root = DatabasePage;
 
 }

@@ -16,6 +16,8 @@ import {HTTP} from "@ionic-native/http";
 import {NativeHttpBackend, NativeHttpFallback, NativeHttpModule} from "ionic-native-http-connection-backend";
 import {PipesModule} from "../pipes/pipes.module";
 import {Pro} from "@ionic/pro";
+import {HomePage} from "../pages/home/home";
+import {DatabasePage} from "../pages/database/database";
 
 Pro.init('8f75b207', {
   appVersion: '0.0.1'
@@ -46,7 +48,9 @@ export class MyErrorHandler implements ErrorHandler {
   declarations: [
     MyApp,
     TabsPage,
-    ZoneEventPage
+    ZoneEventPage,
+    HomePage,
+    DatabasePage
   ],
   imports: [
     BrowserModule,
@@ -59,7 +63,9 @@ export class MyErrorHandler implements ErrorHandler {
   entryComponents: [
     MyApp,
     TabsPage,
-    ZoneEventPage
+    ZoneEventPage,
+    DatabasePage,
+    HomePage
   ],
   providers: [
     StatusBar,
