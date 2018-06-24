@@ -18,6 +18,8 @@ import {PipesModule} from "../pipes/pipes.module";
 import {Pro} from "@ionic/pro";
 import {HomePage} from "../pages/home/home";
 import {DatabasePage} from "../pages/database/database";
+import {HomePageModule} from "../pages/home/home.module";
+import {DatabasePageModule} from "../pages/database/database.module";
 
 Pro.init('8f75b207', {
   appVersion: '0.0.1'
@@ -49,14 +51,14 @@ export class MyErrorHandler implements ErrorHandler {
     MyApp,
     TabsPage,
     ZoneEventPage,
-    HomePage,
-    DatabasePage
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
     NativeHttpModule,
     PipesModule,
+    HomePageModule,
+    DatabasePageModule,
     IonicModule.forRoot(MyApp),
   ],
   bootstrap: [IonicApp],
