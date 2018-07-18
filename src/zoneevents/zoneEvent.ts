@@ -7,4 +7,5 @@ export interface ZoneEvent {
     zoneId?: number;
     name?: string;
     started?: number;
+    minutes?: number;
 }

@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {DefaultService} from "../../swagger-telaradb";
 import {ZoneEventService} from "../../zoneevents/zone-event.service";
-import {ZoneEvent} from "../../zoneevents/zoneEvent";
 import {ZoneEventList} from "../../zoneevents/zoneEventList";
 import {LoadingController} from "ionic-angular";
+import {Observable} from "rxjs/Observable";
 
 @Component({
   selector: 'page-zoneevents',
@@ -13,6 +13,7 @@ export class ZoneEventPage implements OnInit {
 
   events: ZoneEventList[] = [];
   title: string = "No Shard selected yet.";
+  currentDC: string = 'EU';
 
   constructor(private service: DefaultService, private zoneEventService: ZoneEventService, private loadingController: LoadingController) {
   }
@@ -21,72 +22,72 @@ export class ZoneEventPage implements OnInit {
 
   }
 
-  getEventsForEU() {
-    this.events = [];
-    this.title = 'Loading EU...';
-    let loader = this.loadingController.create({
-      content: "Loading EU..",
-      spinner: "crescent"
-    });
-    loader.present();
-    this.zoneEventService.findAllEventsForDC('EU').subscribe(zoneEventListArray => {
-      for (let zoneEventList of zoneEventListArray) {
-        zoneEventList.data = zoneEventList.data.filter(event => {
-          return event.hasOwnProperty('name');
-        });
-      }
-      this.events = zoneEventListArray;
-      this.title = 'EU';
-      loader.dismissAll();
+  doRefresh(refresher) {
+    this.loadEvents(this.currentDC, false).subscribe(value => {
+      refresher.complete();
     }, error => {
-      console.log("Error while fetching Events for EU!");
-      console.log(JSON.stringify(error));
+      refresher.complete();
     });
   }
 
-  getEventsForUS() {
-    this.events = [];
-    this.title = 'Loading US...';
-    let loader = this.loadingController.create({
-      content: "Loading US..",
-      spinner: "crescent"
-    });
-    loader.present();
-    this.zoneEventService.findAllEventsForDC('US').subscribe(zoneEventListArray => {
-      for (let zoneEventList of zoneEventListArray) {
-        zoneEventList.data = zoneEventList.data.filter(event => {
-          return event.hasOwnProperty('name');
-        });
-      }
-      this.events = zoneEventListArray;
-      this.title = 'US';
-      loader.dismissAll();
-    }, error => {
-      console.log("Error while fetching Events for US!");
-      console.log(JSON.stringify(error));
-    });
+  switchToEU() {
+    this.currentDC = 'EU';
+    this.loadEvents('EU', true).subscribe();
   }
 
-  getEventsForPrime() {
-    this.events = [];
-    this.title = 'Loading Prime...';
-    let loader = this.loadingController.create({
-      content: "Loading Prime..",
-      spinner: "crescent"
-    });
-    loader.present();
-    this.zoneEventService.findAllEventsForDC('Prime').subscribe(zoneEventListArray => {
-      for (let zoneEventList of zoneEventListArray) {
-        zoneEventList.data = zoneEventList.data.filter(event => {
-          return event.hasOwnProperty('name');
+  switchToUS() {
+    this.currentDC = 'US';
+    this.loadEvents('US', true).subscribe();
+  }
+
+  switchToPrime() {
+    this.currentDC = 'Prime';
+    this.loadEvents('Prime', true).subscribe();
+  }
+
+
+  loadEvents(dcName, showLoader): Observable<any> {
+    return new Observable(subscriber => {
+      let loader;
+      if (showLoader) {
+        loader = this.loadingController.create({
+          content: "Loading...",
+          spinner: "crescent"
         });
+        loader.present();
       }
-      this.events = zoneEventListArray;
-      this.title = 'Prime';
-      loader.dismissAll();
-    }, error => {
-      console.log("Error while fetching Events for Prime!");
-      console.log(JSON.stringify(error));
+
+      this.events = [];
+      this.title = `Loading ${dcName}...`;
+      this.zoneEventService.findAllEventsForDC(dcName).subscribe(zoneEventListArray => {
+        for (let zoneEventList of zoneEventListArray) {
+          zoneEventList.data = zoneEventList.data.filter(event => {
+            return event.hasOwnProperty('name');
+          });
+          zoneEventList.data.forEach(event => {
+              let eventCreatedSeconds = event.started;
+
+              let nowSeconds = Date.now() / 1000;
+              let diffSeconds = nowSeconds - eventCreatedSeconds;
+
+              let minutes = Math.round(diffSeconds / 60);
+              event.minutes = minutes;
+              console.log(minutes);
+          });
+        }
+        this.events = zoneEventListArray;
+        this.title = dcName;
+
+        if (showLoader) {
+          loader.dismissAll();
+        }
+        subscriber.next(null);
+        subscriber.complete();
+      }, error => {
+        console.log(`Error while fetching Events for ${dcName}!`);
+        console.log(JSON.stringify(error));
+        subscriber.error(error);
+      });
     });
   }
 

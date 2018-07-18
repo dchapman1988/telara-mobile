@@ -14,7 +14,6 @@ import {HttpBackend, HttpClient, HttpClientModule, HttpXhrBackend} from "@angula
 import {ZoneEventService} from "../zoneevents/zone-event.service";
 import {HTTP} from "@ionic-native/http";
 import {NativeHttpBackend, NativeHttpFallback, NativeHttpModule} from "ionic-native-http-connection-backend";
-import {PipesModule} from "../pipes/pipes.module";
 import {Pro} from "@ionic/pro";
 import {HomePage} from "../pages/home/home";
 import {DatabasePage} from "../pages/database/database";
@@ -56,7 +55,6 @@ export class MyErrorHandler implements ErrorHandler {
     BrowserModule,
     HttpClientModule,
     NativeHttpModule,
-    PipesModule,
     HomePageModule,
     DatabasePageModule,
     IonicModule.forRoot(MyApp),
