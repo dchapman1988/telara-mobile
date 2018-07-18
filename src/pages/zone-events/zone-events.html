@@ -24,7 +24,7 @@
           <ion-item  ion-item>
             <h3>{{ event.name }}</h3>
             <p>{{ event.zone }}</p>
-            <ion-badge [color]="event.minutes <= 5 ? 'danger' : 'primary'" item-end>{{ event.minutes }} Min.</ion-badge>
+            <ion-badge [color]="event.minutes <= 5 ? 'secondary' : 'primary'" item-end>{{ event.minutes }} Min.</ion-badge>
           </ion-item>
         </ng-container>
       </ion-item-group>
